@@ -3,6 +3,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const { celebrate, errors } = require('celebrate');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+const validationCreateUser = require('./middlewares/validationCreateUser');
+const validationLogin = require('./middlewares/validationLogin');
 
 const { PORT } = require('./config');
 
@@ -34,12 +38,23 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 
 //   next();
 // });
+app.use(requestLogger); // подключаем логгер запросов
 
-app.post('/signup', createUser);
-app.post('/signin', login);
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
+app.post('/signup', celebrate(validationCreateUser), createUser);
+app.post('/signin', celebrate(validationLogin), login);
 
 app.use('/', cardsRouter);
 app.use('/', usersRouter);
+
+app.use(errorLogger); // подключаем логгер ошибок
+
+app.use(errors());
 
 app.use('/', (req, res) => {
   res.status(404).json({ err: 'Запрашиваемый ресурс не найден' });
