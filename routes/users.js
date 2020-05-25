@@ -1,6 +1,6 @@
-/* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
-
 const usersRouter = require('express').Router(); // создали роутер
+const { celebrate } = require('celebrate');
+const validationCookies = require('../middlewares/validationCookies');
 const {
   getUsers, getUserById,
 } = require('../controllers/users');
@@ -8,8 +8,8 @@ const {
 const auth = require('../middlewares/auth');
 
 
-usersRouter.get('/users', auth, getUsers);
-usersRouter.get('/users/:userId', auth, getUserById);
+usersRouter.get('/users', celebrate(validationCookies), auth, getUsers);
+usersRouter.get('/users/:userId', celebrate(validationCookies), auth, getUserById);
 
 
 module.exports = usersRouter; // экспортировали роутер
