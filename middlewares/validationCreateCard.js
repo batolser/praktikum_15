@@ -6,7 +6,8 @@ module.exports = {
       .required(),
     link: Joi.string().required()
       .regex(/http[s]?:\/\/(www\.)?((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(\w+\.\w+))(:\d{2,5})?((\/[-a-zA-Z0-9\/]*)?)#?\d?/), // eslint-disable-line
-    owner: Joi.string()
-      .required(),
   }).unknown(true),
+  user: Joi.object().keys({
+    _id: Joi.string().alphanum().max(30),
+  }),
 };
