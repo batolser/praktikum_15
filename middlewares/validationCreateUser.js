@@ -7,7 +7,7 @@ module.exports = {
     password: Joi.string().min(8).required(),
     name: Joi.string().min(2).max(20)
       .required()
-      .regex(/^([А-Я]{1}[а-яё]{1,}|[А-Я]{1}[а-яё]{1,}-[А-Я]{1}[а-яё]{1,})$/),
+      .regex(/^([А-ЯA-Zа-яёa-z]{1}[а-яёa-z]{1,}|[А-ЯA-Zа-яёa-z]{1}[а-яёa-z]{1,}-[А-ЯA-Zа-яёa-z]{1}[а-яёa-z]{1,}|[А-ЯA-Zа-яёa-z]{1}[а-яёa-z]{1,}\s[А-ЯA-Zа-яёa-z]{1}[а-яёa-z]{1,}|[А-ЯA-Zа-яёa-z]{1}[а-яёa-z]{1,}\s[А-ЯA-Zа-яёa-z]{1}[а-яёa-z]{1,}-[А-ЯA-Zа-яёa-z]{1}[а-яёa-z]{1,})$/),
     about: Joi.string().min(2).max(20)
       .required(),
     avatar: Joi.string().required()

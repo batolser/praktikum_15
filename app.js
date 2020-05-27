@@ -31,6 +31,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
+  autoIndex: true,
 });
 // app.use((req, res, next) => {
 //   req.user = {
@@ -53,24 +54,29 @@ app.post('/signin', celebrate(validationLogin), login);
 app.use('/', cardsRouter);
 app.use('/', usersRouter);
 
-app.use(errorLogger); // подключаем логгер ошибок
-
-app.use(errors());
-
 app.use('/', (req, res) => {
   res.status(404).json({ err: 'Запрашиваемый ресурс не найден' });
 });
 
-app.use('/', (err, req, res, next) => { // eslint-disable-line
-  const status = err.status || 500;
+app.use(errorLogger); // подключаем логгер ошибок
+
+app.use(errors());
+
+app.use((err, req, res, next) => { // eslint-disable-line
+  const status = err.code || err.statusCode || 500;
   let { message } = err;
+
+  if (err.code === 11000) {
+    return res.status(409).json({ err: 'Пользователь с данным e-mail уже зарегистрирван' });
+  }
+
   if (err.name === 'ValidationError') {
     //  res.status(400).send(`Ошибка валидации:\n${err.message}`);
     return res.status(400).json({ err: `Ошибка валидации:\n${err.message}` });
   }
 
   if (status === 500) {
-    message = 'Приозошла ошибка';
+    message = 'Прoизошла ошибка';
   }
 
   // res.status(status).send(message); изменяю это на строку ниже
