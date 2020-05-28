@@ -63,7 +63,7 @@ app.use(errorLogger); // подключаем логгер ошибок
 app.use(errors());
 
 app.use((err, req, res, next) => { // eslint-disable-line
-  const status = err.code || err.statusCode || 500;
+  const status = err.statusCode || 500;
   let { message } = err;
 
   if (err.code === 11000) {

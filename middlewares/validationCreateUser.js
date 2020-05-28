@@ -11,6 +11,6 @@ module.exports = {
     about: Joi.string().min(2).max(20)
       .required(),
     avatar: Joi.string().required()
-      .regex(/http[s]?:\/\/(www\.)?((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(\w+\.\w+))(:\d{2,5})?((\/[-a-zA-Z0-9\/]*)?)#?\d?/), // eslint-disable-line
+      .regex(/(https?:\/\/)(www\.)?((\w+\.\w{2,})|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))(:\d{2,5})?.*#?/i), // eslint-disable-line
   }),
 };
